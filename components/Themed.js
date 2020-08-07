@@ -1,5 +1,11 @@
 import * as React from "react";
-import { Text as DefaultText, View as DefaultView, useColorScheme } from "react-native";
+import {
+  Text as DefaultText,
+  View as DefaultView,
+  TextInput as DefaultTextInput,
+  TouchableOpacity as DefaultTouchableOpacity,
+  useColorScheme,
+} from "react-native";
 
 import Colors from "../constants/Colors";
 
@@ -29,4 +35,27 @@ export function View(props) {
   );
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
+}
+
+export function TextInput(props) {
+  const { style, lightColor, darkColor, ...otherProps } = props;
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
+
+  return <DefaultTextInput style={[{ color }, style]} {...otherProps} />;
+}
+
+export function TouchableOpacity(props) {
+  const { style, lightColor, darkColor, ...otherProps } = props;
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
+  const backgroundColor = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    "background"
+  );
+
+  return (
+    <DefaultTouchableOpacity
+      style={[{ color, backgroundColor }, style]}
+      {...otherProps}
+    />
+  );
 }

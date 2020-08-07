@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
-import { useColorScheme } from 'react-native';
+import { useColorScheme } from "react-native";
 
 import Colors from "../constants/Colors";
 import SearchScreen from "../screens/Search";
@@ -16,14 +16,17 @@ export default function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
       initialRouteName="TabOne"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+      tabBarOptions={{
+        activeTintColor: Colors[colorScheme].tint,
+        keyboardHidesTabBar: true,
+      }}
     >
       <BottomTab.Screen
         name="Search"
         component={SearchNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="md-search" color={color} />
           ),
         }}
       />
@@ -32,7 +35,7 @@ export default function BottomTabNavigator() {
         component={FavouritesNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-code" color={color} />
+            <TabBarIcon name="md-bookmark" color={color} />
           ),
         }}
       />
@@ -42,7 +45,7 @@ export default function BottomTabNavigator() {
 
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
-function TabBarIcon(props: { name: string; color: string }) {
+function TabBarIcon(props: { name: string, color: string }) {
   return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
 }
 
@@ -54,9 +57,9 @@ function SearchNavigator() {
   return (
     <SearchStack.Navigator>
       <SearchStack.Screen
-        name="TabOneScreen"
+        name="SearchScreen"
         component={SearchScreen}
-        options={{ headerTitle: "Search" }}
+        options={{ headerShown: false }}
       />
     </SearchStack.Navigator>
   );
@@ -68,9 +71,9 @@ function FavouritesNavigator() {
   return (
     <FavouritesStack.Navigator>
       <FavouritesStack.Screen
-        name="TabTwoScreen"
+        name="FavouritesScreen"
         component={FavouritesScreen}
-        options={{ headerTitle: "Favourites" }}
+        options={{ headerShown: false }}
       />
     </FavouritesStack.Navigator>
   );
