@@ -16,6 +16,7 @@ import { RecipeItem } from "../components/RecipeItem";
 import { addFavourite, removeFavourite } from "../actions";
 import { FETCH_RECIPES } from "../services";
 import { scale } from "../utils";
+import * as Device from "expo-device";
 
 function SearchScreen({ addFavourite, removeFavourite, favourites }) {
   const theme = useColorScheme();
@@ -26,11 +27,20 @@ function SearchScreen({ addFavourite, removeFavourite, favourites }) {
   const [recipeList, setRecipeList] = useState(null);
   const [canFetch, setCanFetch] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [deviceType, setDeviceType] = useState(1);
+
+  const newScale = (size) => scale(size, deviceType);
+  const styles = stylesFunc(newScale);
 
   const { data, error } = useQuery(FETCH_RECIPES, {
     variables: { searchText, page },
     skip: !canFetch,
   });
+
+  useEffect(async () => {
+    const deviceType = await Device.getDeviceTypeAsync();
+    setDeviceType(deviceType);
+  }, []);
 
   useEffect(() => {
     clearTimeout(searchTimeout);
@@ -68,7 +78,7 @@ function SearchScreen({ addFavourite, removeFavourite, favourites }) {
 
   return (
     <SafeAreaView
-    edges={['top']}
+      edges={["top"]}
       style={[
         styles.container,
         { backgroundColor: theme == "dark" ? "#8A8A8A" : "white" },
@@ -93,7 +103,7 @@ function SearchScreen({ addFavourite, removeFavourite, favourites }) {
           >
             <Ionicons
               name="ios-close-circle-outline"
-              size={scale(22)}
+              size={newScale(22)}
               color={theme == "dark" ? "white" : "black"}
             />
           </TouchableOpacity>
@@ -115,45 +125,48 @@ function SearchScreen({ addFavourite, removeFavourite, favourites }) {
             favourites={favourites}
             addFavourite={() => addFavourite(item)}
             removeFavourite={() => removeFavourite(item.slug)}
+            deviceType={deviceType}
           />
         )}
       />
     </SafeAreaView>
   );
 }
-const mapStateToProps = (state) => ({ favourites: state.favourites });
+const mapStateToProps = (state) => ({
+  favourites: state.favourites,
+});
 
 export default connect(mapStateToProps, { addFavourite, removeFavourite })(
   SearchScreen
 );
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  inputContainer: {
-    flexDirection: "row",
-    marginHorizontal: scale(15),
-    marginBottom: scale(5),
-    marginTop: scale(10),
-  },
-  textInput: {
-    width: "100%",
-    height: "100%",
-    paddingLeft: scale(5),
-    paddingBottom: scale(4),
-    fontSize: scale(16),
-    borderBottomWidth: scale(1.5),
-    borderBottomColor: "black",
-  },
-  icon: {
-    position: "absolute",
-    right: scale(5),
-    bottom: Platform.OS === "ios" ? scale(3) : scale(5),
-  },
-  list: {
-    flex: 1,
-    width: "100%",
-    //marginBottom: -scale(30)
-  },
-});
+const stylesFunc = (newScale) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    inputContainer: {
+      flexDirection: "row",
+      marginHorizontal: newScale(15),
+      marginBottom: newScale(5),
+      marginTop: newScale(10),
+    },
+    textInput: {
+      width: "100%",
+      height: "100%",
+      paddingLeft: newScale(5),
+      paddingBottom: newScale(4),
+      fontSize: newScale(16),
+      borderBottomWidth: newScale(1.5),
+      borderBottomColor: "black",
+    },
+    icon: {
+      position: "absolute",
+      right: newScale(5),
+      bottom: Platform.OS === "ios" ? newScale(3) : newScale(5),
+    },
+    list: {
+      flex: 1,
+      width: "100%",
+    },
+  });
