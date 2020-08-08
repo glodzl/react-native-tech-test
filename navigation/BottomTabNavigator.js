@@ -7,11 +7,11 @@ import { useColorScheme } from "react-native";
 import Colors from "../constants/Colors";
 import SearchScreen from "../screens/Search";
 import FavouritesScreen from "../screens/Favourites";
-import DetailScreen from "../screens/Detail";
+import { DetailScreen } from "../screens/Detail";
 
 const BottomTab = createBottomTabNavigator();
 
-export default function BottomTabNavigator() {
+function BottomTabNavigator() {
   const colorScheme = useColorScheme();
 
   return (
@@ -24,7 +24,7 @@ export default function BottomTabNavigator() {
     >
       <BottomTab.Screen
         name="Search"
-        component={SearchNavigator}
+        component={SearchScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="md-search" color={color} />
@@ -33,7 +33,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Favourites"
-        component={FavouritesNavigator}
+        component={FavouritesScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="md-bookmark" color={color} />
@@ -52,46 +52,21 @@ function TabBarIcon(props) {
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const SearchStack = createStackNavigator();
+const StackNavigator = createStackNavigator();
 
-function SearchNavigator({ navigation, route }) {
-  navigation.setOptions({
-    tabBarVisible: route.state ? (route.state.index > 0 ? false : true) : null,
-  });
+export default function MainNavigator() {
   return (
-    <SearchStack.Navigator>
-      <SearchStack.Screen
+    <StackNavigator.Navigator>
+      <StackNavigator.Screen
         name="SearchScreen"
-        component={SearchScreen}
+        component={BottomTabNavigator}
         options={{ headerShown: false }}
       />
-      <SearchStack.Screen
+      <StackNavigator.Screen
         name="DetailScreen"
         component={DetailScreen}
-        options={{ headerShown: false, tabBarVisible: false }}
-      />
-    </SearchStack.Navigator>
-  );
-}
-
-const FavouritesStack = createStackNavigator();
-
-function FavouritesNavigator({ navigation, route }) {
-  navigation.setOptions({
-    tabBarVisible: route.state ? (route.state.index > 0 ? false : true) : null,
-  });
-  return (
-    <FavouritesStack.Navigator>
-      <FavouritesStack.Screen
-        name="FavouritesScreen"
-        component={FavouritesScreen}
         options={{ headerShown: false }}
       />
-      <FavouritesStack.Screen
-        name="DetailScreen"
-        component={DetailScreen}
-        options={{ headerShown: false, tabBarVisible: false }}
-      />
-    </FavouritesStack.Navigator>
+    </StackNavigator.Navigator>
   );
 }

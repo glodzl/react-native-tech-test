@@ -1,28 +1,17 @@
 import React from "react";
-import {
-  View,
-  useColorScheme,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-} from "react-native";
+import { useColorScheme, StyleSheet, View } from "react-native";
+import { Text } from "../components/Themed";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { connect } from "react-redux";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { addFavourite, removeFavourite } from "../actions";
+import { Ionicons } from "@expo/vector-icons";
+import { useRoute } from "@react-navigation/native";
+import Header from "../components/Header";
 import { scale } from "../utils";
+import { ScrollView } from "react-native-gesture-handler";
 
-const Detail = ({ favourites, addFavourite, removeFavourite }) => {
+export const DetailScreen = () => {
   const theme = useColorScheme();
-  const navigation = useNavigation();
   const route = useRoute();
   const { item } = route.params;
-  const isFavourite =
-    favourites.filter((recipe) => recipe.slug === item.slug).length > 0;
-  const favouritePress = () =>
-    isFavourite ? removeFavourite(item.slug) : addFavourite(item);
-  const backPress = () => navigation.goBack();
 
   return (
     <SafeAreaView
@@ -31,46 +20,84 @@ const Detail = ({ favourites, addFavourite, removeFavourite }) => {
         { backgroundColor: theme == "dark" ? "#8A8A8A" : "white" },
       ]}
     >
-      <View style={styles.headerButtonContainer}>
-        <TouchableOpacity
-          onPress={backPress}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+      <Header item={item} />
+      <ScrollView contentContainerStyle={{ alignItems: "center", paddingBottom: scale(15) }}>
+        <View
+          style={{
+            flexDirection: "row",
+            width: 100,
+            justifyContent: "space-between",
+            marginVertical: scale(5),
+          }}
         >
-          <AntDesign
-            name="left"
-            size={24}
-            color={theme == "dark" ? "white" : "black"}
-          />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode="tail">
-          {item.name}
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={styles.ratingText}>
+              {item.total_time.substring(2)}
+            </Text>
+            <Ionicons
+              name="md-time"
+              size={18}
+              color={theme == "dark" ? "white" : "black"}
+            />
+          </View>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={styles.ratingText}>{item.serves}</Text>
+            <Ionicons
+              name="md-people"
+              size={18}
+              color={theme == "dark" ? "white" : "black"}
+            />
+          </View>
+        </View>
+        <Text style={{ fontSize: scale(12), textAlign: "center", marginHorizontal: scale(10) }}>
+          {item.tags.map((e) => "#" + e + " ")}
         </Text>
-        <TouchableOpacity
-          onPress={favouritePress}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        <Text style={{ margin: scale(10) }}>{item.introduction}</Text>
+        <Text
+          style={{
+            marginHorizontal: scale(10),
+            alignSelf: "flex-start",
+            fontWeight: "bold",
+          }}
         >
-          <Ionicons
-            name={isFavourite ? "md-heart" : "md-heart-empty"}
-            size={24}
-            color={theme == "dark" ? "white" : "black"}
-          />
-        </TouchableOpacity>
-      </View>
+          Ingredients:
+        </Text>
+        {item.ingredients.map((recipe, index) => (
+          <Text key={index} style={{ marginHorizontal: 10 }}>
+            {recipe.component != "main" && (
+              <Text style={{ fontWeight: "900" }}>{recipe.component}: </Text>
+            )}
+            {recipe.ingredients.join(", ")}.
+          </Text>
+        ))}
+        <Text
+          style={{
+            marginHorizontal: scale(10),
+            marginTop: scale(5),
+            alignSelf: "flex-start",
+            fontWeight: "bold",
+          }}
+        >
+          Steps:
+        </Text>
+        {item.method.map((recipe, index1) =>
+          recipe.steps.map((step, index2) => (
+            <Text
+              key={index1 + index2}
+              style={{ marginHorizontal: 10, alignSelf: "flex-start" }}
+            >
+              •{step}
+            </Text>
+          ))
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
-const mapStateToProps = (state) => ({
-  favourites: state.favourites,
-});
-
-export default connect(mapStateToProps, { addFavourite, removeFavourite })(
-  Detail
-);
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   scrollViewContainer: {
     flex: 1,
