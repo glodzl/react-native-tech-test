@@ -35,7 +35,7 @@ export const RecipeItem = React.memo(
                 </Text>
                 <Ionicons
                   name="md-time"
-                  size={18}
+                  size={scale(18)}
                   color={theme == "dark" ? "white" : "black"}
                 />
               </View>
@@ -43,7 +43,7 @@ export const RecipeItem = React.memo(
                 <Text style={styles.ratingText}>{item.serves}</Text>
                 <Ionicons
                   name="md-people"
-                  size={18}
+                  size={scale(18)}
                   color={theme == "dark" ? "white" : "black"}
                 />
               </View>
@@ -53,6 +53,7 @@ export const RecipeItem = React.memo(
             style={{
               flexDirection: addFavourite ? "row-reverse" : "row",
               justifyContent: "space-between",
+              alignItems: 'center'
             }}
           >
             {addFavourite ? (
@@ -63,7 +64,7 @@ export const RecipeItem = React.memo(
               >
                 <Ionicons
                   name={isFavourite ? "md-heart" : "md-heart-empty"}
-                  size={24}
+                  size={scale(24)}
                   color={theme == "dark" ? "white" : "black"}
                 />
               </TouchableOpacity>
@@ -124,6 +125,7 @@ const styles = StyleSheet.create({
   },
   ratingContainer: {
     flexDirection: "row",
+    alignItems: "center",
   },
   ratingText: {
     marginHorizontal: scale(3),
@@ -151,6 +153,7 @@ const styles = StyleSheet.create({
     marginBottom: scale(5),
     flex: 1,
     marginRight: scale(5),
+    fontSize: scale(13),
   },
   favourite: {
     alignSelf: "flex-end",

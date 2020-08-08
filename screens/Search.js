@@ -93,7 +93,7 @@ function SearchScreen({ addFavourite, removeFavourite, favourites }) {
           >
             <Ionicons
               name="ios-close-circle-outline"
-              size={25}
+              size={scale(20)}
               color={theme == "dark" ? "white" : "black"}
             />
           </TouchableOpacity>
