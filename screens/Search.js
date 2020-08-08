@@ -68,7 +68,7 @@ function SearchScreen({ addFavourite, removeFavourite, favourites }) {
 
   return (
     <SafeAreaView
-      edges="top"
+    edges={['top']}
       style={[
         styles.container,
         { backgroundColor: theme == "dark" ? "#8A8A8A" : "white" },
@@ -93,7 +93,7 @@ function SearchScreen({ addFavourite, removeFavourite, favourites }) {
           >
             <Ionicons
               name="ios-close-circle-outline"
-              size={scale(20)}
+              size={scale(22)}
               color={theme == "dark" ? "white" : "black"}
             />
           </TouchableOpacity>

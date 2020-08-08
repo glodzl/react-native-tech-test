@@ -13,7 +13,7 @@ function FavouriteScreen({ favourites }) {
 
   return (
     <SafeAreaView
-      edges="top"
+    edges={['top']}
       style={[
         styles.container,
         { backgroundColor: theme == "dark" ? "#8A8A8A" : "white" },

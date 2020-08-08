@@ -28,7 +28,7 @@ const Header = ({ item, favourites, addFavourite, removeFavourite }) => {
       >
         <AntDesign
           name="left"
-          size={24}
+          size={scale(24)}
           color={theme == "dark" ? "white" : "black"}
         />
       </TouchableOpacity>
@@ -41,7 +41,7 @@ const Header = ({ item, favourites, addFavourite, removeFavourite }) => {
       >
         <Ionicons
           name={isFavourite ? "md-heart" : "md-heart-empty"}
-          size={24}
+          size={scale(24)}
           color={theme == "dark" ? "white" : "black"}
         />
       </TouchableOpacity>
@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: scale(16),
     marginHorizontal: scale(5),
+    fontWeight: '600'
   },
   headerButtonContainer: {
     flexDirection: "row",

@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
   ratingText: {
     marginHorizontal: scale(3),
     fontSize: scale(12),
+    fontWeight: "500"
   },
   genreContainer: {
     flexDirection: "row",

@@ -14,7 +14,7 @@ export const DetailScreen = () => {
 
   return (
     <SafeAreaView
-      edges="top"
+      edges={["top"]}
       style={[
         styles.container,
         { backgroundColor: theme == "dark" ? "#8A8A8A" : "white" },
@@ -28,18 +28,17 @@ export const DetailScreen = () => {
         <View
           style={{
             flexDirection: "row",
-            width: scale(100),
-            justifyContent: "space-between",
+            justifyContent: "center",
             marginVertical: scale(3),
           }}
         >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={{ flexDirection: "row", alignItems: "center", marginRight: scale(10) }}>
             <Text style={styles.ratingText}>
               {item.total_time.substring(2)}
             </Text>
             <Ionicons
               name="md-time"
-              size={18}
+              size={scale(18)}
               color={theme == "dark" ? "white" : "black"}
             />
           </View>
@@ -47,7 +46,7 @@ export const DetailScreen = () => {
             <Text style={styles.ratingText}>{item.serves}</Text>
             <Ionicons
               name="md-people"
-              size={18}
+              size={scale(18)}
               color={theme == "dark" ? "white" : "black"}
             />
           </View>
@@ -61,25 +60,42 @@ export const DetailScreen = () => {
         >
           {item.tags.map((e) => "#" + e + " ")}
         </Text>
-        <Text style={{ margin: scale(10) }}>{item.introduction}</Text>
+        <Text
+          style={{
+            margin: scale(10),
+            fontSize: scale(13),
+            fontWeight: "500",
+          }}
+        >
+          {item.introduction}
+        </Text>
         <Text
           style={{
             marginHorizontal: scale(10),
             alignSelf: "flex-start",
             fontWeight: "bold",
+            fontSize: scale(13),
           }}
         >
           Ingredients:
         </Text>
-        <View style={{ alignSelf: "flex-start", marginHorizontal: 10 }}>
+        <View
+          style={{
+            alignSelf: "flex-start",
+            marginHorizontal: scale(12),
+            marginBottom: scale(3),
+          }}
+        >
           {item.ingredients.map((recipe, index) => (
             <View>
               {recipe.component != "main" ? (
-                <Text style={{ fontWeight: "600" }}>{recipe.component}: </Text>
+                <Text style={{ fontWeight: "600", fontSize: scale(12) }}>
+                  {recipe.component}:{" "}
+                </Text>
               ) : null}
               <View>
                 {recipe.ingredients.map((ingredient) => (
-                  <Text>•{ingredient}</Text>
+                  <Text style={{ fontSize: scale(12) }}>•{ingredient}</Text>
                 ))}
               </View>
             </View>
@@ -91,6 +107,7 @@ export const DetailScreen = () => {
             marginTop: scale(5),
             alignSelf: "flex-start",
             fontWeight: "bold",
+            fontSize: scale(14),
           }}
         >
           Steps:
@@ -99,7 +116,11 @@ export const DetailScreen = () => {
           recipe.steps.map((step, index2) => (
             <Text
               key={index1 + index2}
-              style={{ marginHorizontal: 10, alignSelf: "flex-start" }}
+              style={{
+                marginHorizontal: scale(12),
+                alignSelf: "flex-start",
+                fontSize: scale(12),
+              }}
             >
               •{step}
             </Text>
@@ -183,6 +204,8 @@ const styles = StyleSheet.create({
   },
   ratingText: {
     margin: scale(3),
+    fontSize: scale(14),
+    fontWeight: "500"
   },
   detailContainer: {
     flex: 1,
