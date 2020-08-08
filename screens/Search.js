@@ -66,11 +66,9 @@ function SearchScreen({ addFavourite, removeFavourite, favourites }) {
     }
   }, [data, error]);
 
-  console.log("searchText", searchText);
-  console.log("page", page);
-
   return (
     <SafeAreaView
+      edges="top"
       style={[
         styles.container,
         { backgroundColor: theme == "dark" ? "#8A8A8A" : "white" },
@@ -86,6 +84,7 @@ function SearchScreen({ addFavourite, removeFavourite, favourites }) {
             setSearchText(val);
           }}
           style={styles.textInput}
+          autoCorrect={false}
         />
         {!!searchText && (
           <TouchableOpacity
@@ -95,7 +94,6 @@ function SearchScreen({ addFavourite, removeFavourite, favourites }) {
             <Ionicons
               name="ios-close-circle-outline"
               size={25}
-              style={{ marginRight: scale(5) }}
               color={theme == "dark" ? "white" : "black"}
             />
           </TouchableOpacity>
@@ -132,14 +130,12 @@ export default connect(mapStateToProps, { addFavourite, removeFavourite })(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
   },
   inputContainer: {
     flexDirection: "row",
     marginHorizontal: scale(15),
     marginBottom: scale(5),
-    marginTop: Platform.OS === "ios" ? scale(20) : scale(5),
+    marginTop: scale(10),
   },
   textInput: {
     width: "100%",
@@ -152,11 +148,12 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: "absolute",
-    right: 0,
+    right: scale(5),
     bottom: Platform.OS === "ios" ? scale(3) : scale(5),
   },
   list: {
     flex: 1,
     width: "100%",
+    //marginBottom: -scale(30)
   },
 });

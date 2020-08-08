@@ -1,12 +1,11 @@
 import React from "react";
-import { useColorScheme, StyleSheet, View } from "react-native";
+import { useColorScheme, StyleSheet, View, ScrollView } from "react-native";
 import { Text } from "../components/Themed";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
 import Header from "../components/Header";
 import { scale } from "../utils";
-import { ScrollView } from "react-native-gesture-handler";
 
 export const DetailScreen = () => {
   const theme = useColorScheme();
@@ -15,19 +14,23 @@ export const DetailScreen = () => {
 
   return (
     <SafeAreaView
+      edges="top"
       style={[
         styles.container,
         { backgroundColor: theme == "dark" ? "#8A8A8A" : "white" },
       ]}
     >
       <Header item={item} />
-      <ScrollView contentContainerStyle={{ alignItems: "center", paddingBottom: scale(15) }}>
+      <ScrollView
+        contentContainerStyle={styles.scrollViewContainer}
+        bounces={false}
+      >
         <View
           style={{
             flexDirection: "row",
-            width: 100,
+            width: scale(100),
             justifyContent: "space-between",
-            marginVertical: scale(5),
+            marginVertical: scale(3),
           }}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -49,7 +52,13 @@ export const DetailScreen = () => {
             />
           </View>
         </View>
-        <Text style={{ fontSize: scale(12), textAlign: "center", marginHorizontal: scale(10) }}>
+        <Text
+          style={{
+            fontSize: scale(12),
+            textAlign: "center",
+            marginHorizontal: scale(10),
+          }}
+        >
           {item.tags.map((e) => "#" + e + " ")}
         </Text>
         <Text style={{ margin: scale(10) }}>{item.introduction}</Text>
@@ -62,14 +71,20 @@ export const DetailScreen = () => {
         >
           Ingredients:
         </Text>
-        {item.ingredients.map((recipe, index) => (
-          <Text key={index} style={{ marginHorizontal: 10 }}>
-            {recipe.component != "main" && (
-              <Text style={{ fontWeight: "900" }}>{recipe.component}: </Text>
-            )}
-            {recipe.ingredients.join(", ")}.
-          </Text>
-        ))}
+        <View style={{ alignSelf: "flex-start", marginHorizontal: 10 }}>
+          {item.ingredients.map((recipe, index) => (
+            <View>
+              {recipe.component != "main" ? (
+                <Text style={{ fontWeight: "600" }}>{recipe.component}: </Text>
+              ) : null}
+              <View>
+                {recipe.ingredients.map((ingredient) => (
+                  <Text>•{ingredient}</Text>
+                ))}
+              </View>
+            </View>
+          ))}
+        </View>
         <Text
           style={{
             marginHorizontal: scale(10),
@@ -97,11 +112,11 @@ export const DetailScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   scrollViewContainer: {
-    flex: 1,
-    zIndex: 1,
+    alignItems: "center",
+    paddingBottom: scale(15),
   },
   headerContainer: {
     position: "absolute",
@@ -167,7 +182,7 @@ const styles = StyleSheet.create({
     marginVertical: scale(5),
   },
   ratingText: {
-    marginVertical: scale(5),
+    margin: scale(3),
   },
   detailContainer: {
     flex: 1,

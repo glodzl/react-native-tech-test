@@ -32,7 +32,7 @@ const Header = ({ item, favourites, addFavourite, removeFavourite }) => {
           color={theme == "dark" ? "white" : "black"}
         />
       </TouchableOpacity>
-      <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode="tail">
+      <Text style={styles.headerTitle} ellipsizeMode="tail">
         {item.name}
       </Text>
       <TouchableOpacity
