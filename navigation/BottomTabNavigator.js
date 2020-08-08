@@ -7,6 +7,7 @@ import { useColorScheme } from "react-native";
 import Colors from "../constants/Colors";
 import SearchScreen from "../screens/Search";
 import FavouritesScreen from "../screens/Favourites";
+import DetailScreen from "../screens/Detail";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -53,7 +54,10 @@ function TabBarIcon(props) {
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 const SearchStack = createStackNavigator();
 
-function SearchNavigator() {
+function SearchNavigator({ navigation, route }) {
+  navigation.setOptions({
+    tabBarVisible: route.state ? (route.state.index > 0 ? false : true) : null,
+  });
   return (
     <SearchStack.Navigator>
       <SearchStack.Screen
@@ -61,19 +65,32 @@ function SearchNavigator() {
         component={SearchScreen}
         options={{ headerShown: false }}
       />
+      <SearchStack.Screen
+        name="DetailScreen"
+        component={DetailScreen}
+        options={{ headerShown: false, tabBarVisible: false }}
+      />
     </SearchStack.Navigator>
   );
 }
 
 const FavouritesStack = createStackNavigator();
 
-function FavouritesNavigator() {
+function FavouritesNavigator({ navigation, route }) {
+  navigation.setOptions({
+    tabBarVisible: route.state ? (route.state.index > 0 ? false : true) : null,
+  });
   return (
     <FavouritesStack.Navigator>
       <FavouritesStack.Screen
         name="FavouritesScreen"
         component={FavouritesScreen}
         options={{ headerShown: false }}
+      />
+      <FavouritesStack.Screen
+        name="DetailScreen"
+        component={DetailScreen}
+        options={{ headerShown: false, tabBarVisible: false }}
       />
     </FavouritesStack.Navigator>
   );

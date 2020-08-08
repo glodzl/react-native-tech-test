@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { gql } from "@apollo/client";
 
 export const FETCH_RECIPES = gql`
   query getRecipes($searchText: String!, $page: Int!) {
@@ -13,9 +13,6 @@ export const FETCH_RECIPES = gql`
           slug
           tags
           total_time
-          media {
-            uri
-          }
           ingredients {
             component
             ingredients

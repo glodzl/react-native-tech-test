@@ -8,18 +8,18 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useQuery } from "@apollo/client";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { View, TextInput } from "../components/Themed";
 import { RecipeItem } from "../components/RecipeItem";
 import { addFavourite, removeFavourite } from "../actions";
 import { FETCH_RECIPES } from "../services";
 import { scale } from "../utils";
-import { useQuery } from "@apollo/react-hooks";
-import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 
 function SearchScreen({ addFavourite, removeFavourite, favourites }) {
-  const navigation = useNavigation();
   const theme = useColorScheme();
+  const navigation = useNavigation();
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [page, setPage] = useState(1);
@@ -113,7 +113,7 @@ function SearchScreen({ addFavourite, removeFavourite, favourites }) {
         renderItem={({ item }) => (
           <RecipeItem
             item={item}
-            navigate={() => navigation.navigate("details", { item })}
+            navigate={() => navigation.navigate("DetailScreen", { item })}
             favourites={favourites}
             addFavourite={() => addFavourite(item)}
             removeFavourite={() => removeFavourite(item.slug)}
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     paddingBottom: scale(4),
     fontSize: scale(16),
     borderBottomWidth: scale(1.5),
-    borderBottomColor: 'black',
+    borderBottomColor: "black",
   },
   icon: {
     position: "absolute",

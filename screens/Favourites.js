@@ -24,7 +24,7 @@ function FavouriteScreen({ favourites }) {
         renderItem={({ item }) => (
           <RecipeItem
             item={item}
-            navigate={() => navigation.navigate("details", { item })}
+            navigate={() => navigation.navigate("DetailScreen", { item })}
             favourites={favourites}
           />
         )}
