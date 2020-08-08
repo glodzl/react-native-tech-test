@@ -2,6 +2,9 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { useColorScheme } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./config/setupStore";
 import { ApolloProvider } from "react-apollo";
 import { makeApolloClient } from "./config";
 
@@ -19,10 +22,14 @@ export default function App() {
   } else {
     return (
       <ApolloProvider client={client}>
-        <SafeAreaProvider>
-          <Navigation colorScheme={colorScheme} />
-          <StatusBar />
-        </SafeAreaProvider>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <SafeAreaProvider>
+              <Navigation colorScheme={colorScheme} />
+              <StatusBar />
+            </SafeAreaProvider>
+          </PersistGate>
+        </Provider>
       </ApolloProvider>
     );
   }

@@ -6,16 +6,19 @@ import {
   Platform,
   useColorScheme,
 } from "react-native";
+import { connect } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, TextInput } from "../components/Themed";
 import { RecipeItem } from "../components/RecipeItem";
+import { addFavourite, removeFavourite } from "../actions";
 import { FETCH_RECIPES } from "../services";
-import colors from "../themes/colors";
 import { scale } from "../utils";
 import { useQuery } from "@apollo/react-hooks";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
-function SearchScreen() {
+function SearchScreen({ addFavourite, removeFavourite, favourites }) {
+  const navigation = useNavigation();
   const theme = useColorScheme();
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchText, setSearchText] = useState("");
@@ -76,7 +79,7 @@ function SearchScreen() {
       <View style={styles.inputContainer}>
         <TextInput
           value={searchText}
-          placeholder="Search for recipes by name"
+          placeholder="Search for recipes"
           autoFocus
           autoCapitalize="none"
           onChangeText={(val) => {
@@ -110,27 +113,21 @@ function SearchScreen() {
         renderItem={({ item }) => (
           <RecipeItem
             item={item}
-            //onPress={() => this.props.navigation.navigate("details", { item })}
-            //addFavourite={() => this.props.addFavourite(item)}
-            //removeFavourite={() => this.props.removeFavourite(item)}
+            navigate={() => navigation.navigate("details", { item })}
+            favourites={favourites}
+            addFavourite={() => addFavourite(item)}
+            removeFavourite={() => removeFavourite(item.slug)}
           />
         )}
       />
     </SafeAreaView>
   );
 }
-
-export default SearchScreen;
-
-/*
-const mapStateToProps = (state) => ({
-  favourites: state.favourites
-});
+const mapStateToProps = (state) => ({ favourites: state.favourites });
 
 export default connect(mapStateToProps, { addFavourite, removeFavourite })(
-  Search
+  SearchScreen
 );
-*/
 
 const styles = StyleSheet.create({
   container: {
@@ -151,7 +148,7 @@ const styles = StyleSheet.create({
     paddingBottom: scale(4),
     fontSize: scale(16),
     borderBottomWidth: scale(1.5),
-    borderBottomColor: colors.darkBlue,
+    borderBottomColor: 'black',
   },
   icon: {
     position: "absolute",
