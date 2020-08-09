@@ -22,73 +22,74 @@ function SearchScreen({ addFavourite, removeFavourite, favourites }) {
   const [searchText, setSearchText] = useState("");
   const [page, setPage] = useState(1);
   const scale = useScale();
-  const styles = stylesFunc(scale);
+  const styles = scale && stylesFunc(scale);
 
   const { dataLoaded, recipeList } = useRecipeFetch({
     searchText,
     page,
   });
-
-  return (
-    <SafeAreaView
-      edges={["top"]}
-      style={[
-        styles.container,
-        { backgroundColor: theme == "dark" ? "#8A8A8A" : "white" },
-      ]}
-    >
-      <View style={styles.inputContainer}>
-        <TextInput
-          value={searchText}
-          placeholder="Search for recipes"
-          autoFocus
-          autoCapitalize="none"
-          onChangeText={(val) => {
-            setSearchText(val);
-            if (page != 1) {
-              setPage(1);
+  if (scale) {
+    return (
+      <SafeAreaView
+        edges={["top"]}
+        style={[
+          styles.container,
+          { backgroundColor: theme == "dark" ? "#8A8A8A" : "white" },
+        ]}
+      >
+        <View style={styles.inputContainer}>
+          <TextInput
+            value={searchText}
+            placeholder="Search for recipes"
+            autoFocus
+            autoCapitalize="none"
+            onChangeText={(val) => {
+              setSearchText(val);
+              if (page != 1) {
+                setPage(1);
+              }
+            }}
+            style={styles.textInput}
+            autoCorrect={false}
+          />
+          {!!searchText && (
+            <TouchableOpacity
+              style={styles.icon}
+              onPress={() => setSearchText("")}
+            >
+              <Ionicons
+                name="ios-close-circle-outline"
+                size={scale(22)}
+                color={theme == "dark" ? "white" : "black"}
+              />
+            </TouchableOpacity>
+          )}
+        </View>
+        <FlatList
+          style={styles.list}
+          data={recipeList}
+          keyExtractor={(item) => item.slug}
+          onEndReached={() => {
+            if (dataLoaded) {
+              setPage(page + 1);
             }
           }}
-          style={styles.textInput}
-          autoCorrect={false}
-        />
-        {!!searchText && (
-          <TouchableOpacity
-            style={styles.icon}
-            onPress={() => setSearchText("")}
-          >
-            <Ionicons
-              name="ios-close-circle-outline"
-              size={scale(22)}
-              color={theme == "dark" ? "white" : "black"}
+          renderItem={({ item }) => (
+            <RecipeItem
+              item={item}
+              navigate={() =>
+                navigation.navigate("DetailScreen", { item, scale })
+              }
+              favourites={favourites}
+              addFavourite={() => addFavourite(item)}
+              removeFavourite={() => removeFavourite(item.slug)}
+              scale={scale}
             />
-          </TouchableOpacity>
-        )}
-      </View>
-      <FlatList
-        style={styles.list}
-        data={recipeList}
-        keyExtractor={(item) => item.slug}
-        onEndReached={() => {
-          if (dataLoaded) {
-            setPage(page + 1);
-          }
-        }}
-        renderItem={({ item }) => (
-          <RecipeItem
-            item={item}
-            navigate={() =>
-              navigation.navigate("DetailScreen", { item, scale })
-            }
-            favourites={favourites}
-            addFavourite={() => addFavourite(item)}
-            removeFavourite={() => removeFavourite(item.slug)}
-            scale={scale}
-          />
-        )}
-      />
-    </SafeAreaView>
-  );
+          )}
+        />
+      </SafeAreaView>
+    );
+  } else return <View />;
 }
 const mapStateToProps = (state) => ({
   favourites: state.favourites,
