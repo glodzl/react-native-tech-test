@@ -1,5 +1,6 @@
 App was built using React Native, JavaScript, Expo, GraphQL Apollo, Redux, React Navigation.<br/>
-Bonus features: dark mode support, fetch debounce, only loads 25 recipes first, can save favourite recipes.
+Bonus features: dark mode support, fetch debounce, only loads 25 recipes first, can save favourite recipes.<br/>
+Expo link: https://expo.io/@glodzl/react-native-tech-test
 
 # Recipe App
 We'd like a very simple mobile app for using our recipes. It should allow users to search for recipes and view them.
