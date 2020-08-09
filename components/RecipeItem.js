@@ -2,25 +2,15 @@ import React from "react";
 import { StyleSheet, useColorScheme } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Text, View, TouchableOpacity } from "./Themed";
-import { scale } from "../utils";
 
 export const RecipeItem = React.memo(
-  ({
-    item,
-    favourites,
-    addFavourite,
-    removeFavourite,
-    navigate,
-    deviceType,
-  }) => {
+  ({ item, favourites, addFavourite, removeFavourite, navigate, scale }) => {
     const theme = useColorScheme();
     const isFavourite =
       favourites.filter((recipe) => recipe.slug === item.slug).length > 0;
     const favouritePress = () =>
       isFavourite ? removeFavourite(item) : addFavourite(item);
-
-    const newScale = (size) => scale(size, deviceType);
-    const styles = stylesFunc(newScale);
+    const styles = stylesFunc(scale);
 
     return (
       <TouchableOpacity onPress={navigate} style={styles.container}>
@@ -31,7 +21,7 @@ export const RecipeItem = React.memo(
                 {item.name}
               </Text>
               <Text
-                style={{ fontSize: newScale(10) }}
+                style={{ fontSize: scale(10) }}
                 numberOfLines={2}
                 ellipsizeMode="tail"
               >
@@ -45,7 +35,7 @@ export const RecipeItem = React.memo(
                 </Text>
                 <Ionicons
                   name="md-time"
-                  size={newScale(18)}
+                  size={scale(18)}
                   color={theme == "dark" ? "white" : "black"}
                 />
               </View>
@@ -53,7 +43,7 @@ export const RecipeItem = React.memo(
                 <Text style={styles.ratingText}>{item.serves}</Text>
                 <Ionicons
                   name="md-people"
-                  size={newScale(18)}
+                  size={scale(18)}
                   color={theme == "dark" ? "white" : "black"}
                 />
               </View>
@@ -74,7 +64,7 @@ export const RecipeItem = React.memo(
               >
                 <Ionicons
                   name={isFavourite ? "md-heart" : "md-heart-empty"}
-                  size={newScale(24)}
+                  size={scale(24)}
                   color={theme == "dark" ? "white" : "black"}
                 />
               </TouchableOpacity>
@@ -95,52 +85,52 @@ export const RecipeItem = React.memo(
   }
 );
 
-const stylesFunc = (newScale) =>
+const stylesFunc = (scale) =>
   StyleSheet.create({
     container: {
       flexDirection: "row",
       justifyContent: "space-between",
       flex: 1,
-      marginVertical: newScale(10),
-      marginHorizontal: newScale(15),
-      borderRadius: newScale(10),
+      marginVertical: scale(10),
+      marginHorizontal: scale(15),
+      borderRadius: scale(10),
       shadowColor: "black",
-      shadowOffset: { width: newScale(2), height: newScale(3) },
-      shadowRadius: newScale(5),
+      shadowOffset: { width: scale(2), height: scale(3) },
+      shadowRadius: scale(5),
       shadowOpacity: 0.21,
-      elevation: newScale(3),
+      elevation: scale(3),
     },
     imageContainer: {
-      borderTopLeftRadius: newScale(10),
-      borderBottomLeftRadius: newScale(10),
+      borderTopLeftRadius: scale(10),
+      borderBottomLeftRadius: scale(10),
       overflow: "hidden",
     },
     image: {
-      height: newScale(200),
-      width: newScale(80),
+      height: scale(200),
+      width: scale(80),
       resizeMode: "cover",
     },
     detailContainer: {
       flex: 1,
-      marginHorizontal: newScale(10),
+      marginHorizontal: scale(10),
     },
     titleContainer: {
       flexDirection: "row",
       justifyContent: "space-between",
-      marginTop: newScale(5),
-      marginBottom: newScale(5),
+      marginTop: scale(5),
+      marginBottom: scale(5),
     },
     title: {
       flex: 1,
-      fontSize: newScale(16),
+      fontSize: scale(16),
     },
     ratingContainer: {
       flexDirection: "row",
       alignItems: "center",
     },
     ratingText: {
-      marginHorizontal: newScale(3),
-      fontSize: newScale(12),
+      marginHorizontal: scale(3),
+      fontSize: scale(12),
       fontWeight: "500",
     },
     genreContainer: {
@@ -150,25 +140,25 @@ const stylesFunc = (newScale) =>
     },
     genreText: {
       flex: 1,
-      fontSize: newScale(12),
+      fontSize: scale(12),
     },
     dateContainer: {
       flexDirection: "row",
       alignItems: "center",
-      marginRight: newScale(-1),
+      marginRight: scale(-1),
     },
     dateText: {
-      marginHorizontal: newScale(3),
-      fontSize: newScale(12),
+      marginHorizontal: scale(3),
+      fontSize: scale(12),
     },
     overview: {
-      marginBottom: newScale(5),
+      marginBottom: scale(5),
       flex: 1,
-      marginRight: newScale(5),
-      fontSize: newScale(13),
+      marginRight: scale(5),
+      fontSize: scale(13),
     },
     favourite: {
       alignSelf: "flex-end",
-      marginBottom: newScale(5),
+      marginBottom: scale(5),
     },
   });

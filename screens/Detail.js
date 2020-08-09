@@ -5,12 +5,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
 import Header from "../components/Header";
-import { scale } from "../utils";
 
 export const DetailScreen = () => {
   const theme = useColorScheme();
   const route = useRoute();
-  const { item } = route.params;
+  const { item, scale } = route.params;
+  const styles = stylesFunc(scale);
 
   return (
     <SafeAreaView
@@ -20,7 +20,7 @@ export const DetailScreen = () => {
         { backgroundColor: theme == "dark" ? "#8A8A8A" : "white" },
       ]}
     >
-      <Header item={item} />
+      <Header item={item} scale={scale} />
       <ScrollView
         contentContainerStyle={styles.scrollViewContainer}
         bounces={false}
@@ -32,7 +32,13 @@ export const DetailScreen = () => {
             marginVertical: scale(3),
           }}
         >
-          <View style={{ flexDirection: "row", alignItems: "center", marginRight: scale(10) }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginRight: scale(10),
+            }}
+          >
             <Text style={styles.ratingText}>
               {item.total_time.substring(2)}
             </Text>
@@ -131,102 +137,103 @@ export const DetailScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollViewContainer: {
-    alignItems: "center",
-    paddingBottom: scale(15),
-  },
-  headerContainer: {
-    position: "absolute",
-    flex: 0,
-    zIndex: 2,
-    height: scale(200),
-    width: "100%",
-    backgroundColor: "transparent",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  headerPlaceholder: {
-    flex: 0,
-    height: scale(200),
-    width: "100%",
-    marginTop: scale(10),
-  },
-  headerBackground: {
-    position: "absolute",
-    top: -5,
-    flex: 0,
-    height: scale(200),
-    width: "100%",
-    backgroundColor: "black",
-    zIndex: 2,
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
-  headerImage: {
-    height: scale(200),
-    width: "100%",
-    resizeMode: "cover",
-  },
-  headerTitle: {
-    flex: 1,
-    textAlign: "center",
-    fontSize: scale(16),
-    marginHorizontal: scale(5),
-    color: "white",
-  },
-  headerButtonContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  mainContainer: {
-    marginHorizontal: scale(15),
-  },
-  subContainer: {
-    flexDirection: "row",
-    marginBottom: scale(30),
-  },
-  image: {
-    height: scale(180),
-    width: scale(120),
-    resizeMode: "cover",
-  },
-  title: {
-    fontSize: scale(18),
-    marginBottom: scale(10),
-  },
-  genre: {
-    marginVertical: scale(5),
-  },
-  ratingText: {
-    margin: scale(3),
-    fontSize: scale(14),
-    fontWeight: "500"
-  },
-  detailContainer: {
-    flex: 1,
-    marginLeft: scale(10),
-    marginTop: scale(15),
-  },
-  detailSubContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: scale(5),
-  },
-  detailText: {
-    marginRight: scale(3),
-  },
-  youtube: {
-    width: scale(320),
-    marginBottom: scale(80),
-    alignSelf: "center",
-  },
-  overview: {
-    fontSize: scale(14),
-    marginBottom: scale(40),
-  },
-});
+const stylesFunc = (scale) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    scrollViewContainer: {
+      alignItems: "center",
+      paddingBottom: scale(15),
+    },
+    headerContainer: {
+      position: "absolute",
+      flex: 0,
+      zIndex: 2,
+      height: scale(200),
+      width: "100%",
+      backgroundColor: "transparent",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    headerPlaceholder: {
+      flex: 0,
+      height: scale(200),
+      width: "100%",
+      marginTop: scale(10),
+    },
+    headerBackground: {
+      position: "absolute",
+      top: -5,
+      flex: 0,
+      height: scale(200),
+      width: "100%",
+      backgroundColor: "black",
+      zIndex: 2,
+      alignItems: "center",
+      justifyContent: "flex-end",
+    },
+    headerImage: {
+      height: scale(200),
+      width: "100%",
+      resizeMode: "cover",
+    },
+    headerTitle: {
+      flex: 1,
+      textAlign: "center",
+      fontSize: scale(16),
+      marginHorizontal: scale(5),
+      color: "white",
+    },
+    headerButtonContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    mainContainer: {
+      marginHorizontal: scale(15),
+    },
+    subContainer: {
+      flexDirection: "row",
+      marginBottom: scale(30),
+    },
+    image: {
+      height: scale(180),
+      width: scale(120),
+      resizeMode: "cover",
+    },
+    title: {
+      fontSize: scale(18),
+      marginBottom: scale(10),
+    },
+    genre: {
+      marginVertical: scale(5),
+    },
+    ratingText: {
+      margin: scale(3),
+      fontSize: scale(14),
+      fontWeight: "500",
+    },
+    detailContainer: {
+      flex: 1,
+      marginLeft: scale(10),
+      marginTop: scale(15),
+    },
+    detailSubContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginVertical: scale(5),
+    },
+    detailText: {
+      marginRight: scale(3),
+    },
+    youtube: {
+      width: scale(320),
+      marginBottom: scale(80),
+      alignSelf: "center",
+    },
+    overview: {
+      fontSize: scale(14),
+      marginBottom: scale(40),
+    },
+  });

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   FlatList,
   TouchableOpacity,
@@ -8,73 +8,26 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useQuery } from "@apollo/client";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { View, TextInput } from "../components/Themed";
 import { RecipeItem } from "../components/RecipeItem";
 import { addFavourite, removeFavourite } from "../actions";
-import { FETCH_RECIPES } from "../services";
-import { scale } from "../utils";
-import * as Device from "expo-device";
+import useScale from "../hooks/useScale";
+import useRecipeFetch from "../hooks/useRecipeFetch";
 
 function SearchScreen({ addFavourite, removeFavourite, favourites }) {
   const theme = useColorScheme();
   const navigation = useNavigation();
-  const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [page, setPage] = useState(1);
-  const [recipeList, setRecipeList] = useState(null);
-  const [canFetch, setCanFetch] = useState(false);
-  const [dataLoaded, setDataLoaded] = useState(false);
-  const [deviceType, setDeviceType] = useState(1);
+  const scale = useScale();
+  const styles = stylesFunc(scale);
 
-  const newScale = (size) => scale(size, deviceType);
-  const styles = stylesFunc(newScale);
-
-  const { data, error } = useQuery(FETCH_RECIPES, {
-    variables: { searchText, page },
-    skip: !canFetch,
+  const { dataLoaded, recipeList } = useRecipeFetch({
+    searchText,
+    page,
   });
-
-  useEffect(async () => {
-    const deviceType = await Device.getDeviceTypeAsync();
-    setDeviceType(deviceType);
-  }, []);
-
-  useEffect(() => {
-    clearTimeout(searchTimeout);
-    setPage(1);
-    setCanFetch(false);
-    if (!!searchText) {
-      const search = setTimeout(() => {
-        setCanFetch(true);
-      }, 1000);
-      setSearchTimeout(search);
-    }
-  }, [searchText]);
-
-  useEffect(() => {
-    if (page > 1) {
-      setCanFetch(true);
-      setDataLoaded(false);
-    }
-  }, [page]);
-
-  useEffect(() => {
-    setCanFetch(false);
-    if (data) {
-      const newRecipes = data.recipe_search.hits.map((elem) => elem.recipe);
-      const newRecipeList =
-        page == 1 ? newRecipes : [...recipeList, ...newRecipes];
-      setRecipeList(newRecipeList);
-      console.log("newRecipeList", newRecipeList);
-      setDataLoaded(true);
-    }
-    if (error) {
-      console.log("error");
-    }
-  }, [data, error]);
 
   return (
     <SafeAreaView
@@ -92,6 +45,9 @@ function SearchScreen({ addFavourite, removeFavourite, favourites }) {
           autoCapitalize="none"
           onChangeText={(val) => {
             setSearchText(val);
+            if (page != 1) {
+              setPage(1);
+            }
           }}
           style={styles.textInput}
           autoCorrect={false}
@@ -103,7 +59,7 @@ function SearchScreen({ addFavourite, removeFavourite, favourites }) {
           >
             <Ionicons
               name="ios-close-circle-outline"
-              size={newScale(22)}
+              size={scale(22)}
               color={theme == "dark" ? "white" : "black"}
             />
           </TouchableOpacity>
@@ -121,11 +77,13 @@ function SearchScreen({ addFavourite, removeFavourite, favourites }) {
         renderItem={({ item }) => (
           <RecipeItem
             item={item}
-            navigate={() => navigation.navigate("DetailScreen", { item })}
+            navigate={() =>
+              navigation.navigate("DetailScreen", { item, scale })
+            }
             favourites={favourites}
             addFavourite={() => addFavourite(item)}
             removeFavourite={() => removeFavourite(item.slug)}
-            deviceType={deviceType}
+            scale={scale}
           />
         )}
       />
@@ -140,30 +98,30 @@ export default connect(mapStateToProps, { addFavourite, removeFavourite })(
   SearchScreen
 );
 
-const stylesFunc = (newScale) =>
+const stylesFunc = (scale) =>
   StyleSheet.create({
     container: {
       flex: 1,
     },
     inputContainer: {
       flexDirection: "row",
-      marginHorizontal: newScale(15),
-      marginBottom: newScale(5),
-      marginTop: newScale(10),
+      marginHorizontal: scale(15),
+      marginBottom: scale(5),
+      marginTop: scale(10),
     },
     textInput: {
       width: "100%",
       height: "100%",
-      paddingLeft: newScale(5),
-      paddingBottom: newScale(4),
-      fontSize: newScale(16),
-      borderBottomWidth: newScale(1.5),
+      paddingLeft: scale(5),
+      paddingBottom: scale(4),
+      fontSize: scale(16),
+      borderBottomWidth: scale(1.5),
       borderBottomColor: "black",
     },
     icon: {
       position: "absolute",
-      right: newScale(5),
-      bottom: Platform.OS === "ios" ? newScale(3) : newScale(5),
+      right: scale(5),
+      bottom: Platform.OS === "ios" ? scale(3) : scale(5),
     },
     list: {
       flex: 1,

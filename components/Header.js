@@ -8,11 +8,10 @@ import {
 import { Text } from "./Themed";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { scale } from "../utils";
 import { connect } from "react-redux";
 import { addFavourite, removeFavourite } from "../actions";
 
-const Header = ({ item, favourites, addFavourite, removeFavourite }) => {
+const Header = ({ item, favourites, addFavourite, removeFavourite, scale }) => {
   const theme = useColorScheme();
   const navigation = useNavigation();
   const isFavourite =
@@ -20,6 +19,8 @@ const Header = ({ item, favourites, addFavourite, removeFavourite }) => {
   const favouritePress = () =>
     isFavourite ? removeFavourite(item.slug) : addFavourite(item);
   const backPress = () => navigation.goBack();
+  const styles = stylesFunc(scale);
+
   return (
     <View style={styles.headerButtonContainer}>
       <TouchableOpacity
@@ -57,19 +58,20 @@ export default connect(mapStateToProps, { addFavourite, removeFavourite })(
   Header
 );
 
-const styles = StyleSheet.create({
-  headerTitle: {
-    flex: 1,
-    textAlign: "center",
-    fontSize: scale(16),
-    marginHorizontal: scale(5),
-    fontWeight: '600'
-  },
-  headerButtonContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginHorizontal: scale(10),
-    marginVertical: scale(5),
-  },
-});
+const stylesFunc = (scale) =>
+  StyleSheet.create({
+    headerTitle: {
+      flex: 1,
+      textAlign: "center",
+      fontSize: scale(16),
+      marginHorizontal: scale(5),
+      fontWeight: "600",
+    },
+    headerButtonContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginHorizontal: scale(10),
+      marginVertical: scale(5),
+    },
+  });
