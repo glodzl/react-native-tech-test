@@ -1,9 +1,9 @@
 import React from "react";
 import { FlatList, StyleSheet, useColorScheme } from "react-native";
 import { Text, View } from "../components/Themed";
+import { RecipeItem } from "../components/RecipeItem";
 import { connect } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { RecipeItem } from "../components/RecipeItem";
 import { useNavigation } from "@react-navigation/native";
 import useScale from "../hooks/useScale";
 

@@ -21,16 +21,16 @@ export const RecipeItem = React.memo(
                 {item.name}
               </Text>
               <Text
-                style={{ fontSize: scale(10) }}
+                style={styles.hashTagText}
                 numberOfLines={2}
                 ellipsizeMode="tail"
               >
                 {item.tags.map((e) => "#" + e + " ")}
               </Text>
             </View>
-            <View style={{ alignItems: "flex-end" }}>
-              <View style={styles.ratingContainer}>
-                <Text style={styles.ratingText}>
+            <View style={styles.infoContainer}>
+              <View style={styles.infoSubContainer}>
+                <Text style={styles.infoText}>
                   {item.total_time.substring(2)}
                 </Text>
                 <Ionicons
@@ -39,8 +39,8 @@ export const RecipeItem = React.memo(
                   color={theme == "dark" ? "white" : "black"}
                 />
               </View>
-              <View style={styles.ratingContainer}>
-                <Text style={styles.ratingText}>{item.serves}</Text>
+              <View style={styles.infoSubContainer}>
+                <Text style={styles.infoText}>{item.serves}</Text>
                 <Ionicons
                   name="md-people"
                   size={scale(18)}
@@ -50,11 +50,10 @@ export const RecipeItem = React.memo(
             </View>
           </View>
           <View
-            style={{
-              flexDirection: addFavourite ? "row-reverse" : "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
+            style={[
+              styles.descriptionContainer,
+              { flexDirection: addFavourite ? "row-reverse" : "row" },
+            ]}
           >
             {addFavourite ? (
               <TouchableOpacity
@@ -71,7 +70,7 @@ export const RecipeItem = React.memo(
             ) : null}
             {item.short_description ? (
               <Text
-                style={styles.overview}
+                style={styles.descriptionText}
                 numberOfLines={5}
                 ellipsizeMode="tail"
               >
@@ -100,16 +99,6 @@ const stylesFunc = (scale) =>
       shadowOpacity: 0.21,
       elevation: scale(3),
     },
-    imageContainer: {
-      borderTopLeftRadius: scale(10),
-      borderBottomLeftRadius: scale(10),
-      overflow: "hidden",
-    },
-    image: {
-      height: scale(200),
-      width: scale(80),
-      resizeMode: "cover",
-    },
     detailContainer: {
       flex: 1,
       marginHorizontal: scale(10),
@@ -124,34 +113,16 @@ const stylesFunc = (scale) =>
       flex: 1,
       fontSize: scale(16),
     },
-    ratingContainer: {
+    infoSubContainer: {
       flexDirection: "row",
       alignItems: "center",
     },
-    ratingText: {
+    infoText: {
       marginHorizontal: scale(3),
       fontSize: scale(12),
       fontWeight: "500",
     },
-    genreContainer: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-    },
-    genreText: {
-      flex: 1,
-      fontSize: scale(12),
-    },
-    dateContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      marginRight: scale(-1),
-    },
-    dateText: {
-      marginHorizontal: scale(3),
-      fontSize: scale(12),
-    },
-    overview: {
+    descriptionText: {
       marginBottom: scale(5),
       flex: 1,
       marginRight: scale(5),
@@ -160,5 +131,13 @@ const stylesFunc = (scale) =>
     favourite: {
       alignSelf: "flex-end",
       marginBottom: scale(5),
+    },
+    hashTagText: {
+      fontSize: scale(10),
+    },
+    infoContainer: { alignItems: "flex-end" },
+    descriptionContainer: {
+      justifyContent: "space-between",
+      alignItems: "center",
     },
   });

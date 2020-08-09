@@ -1,9 +1,9 @@
 import React from "react";
 import {
-  useColorScheme,
   StyleSheet,
-  View,
   TouchableOpacity,
+  useColorScheme,
+  View,
 } from "react-native";
 import { Text } from "./Themed";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
