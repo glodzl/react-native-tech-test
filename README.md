@@ -1,5 +1,6 @@
 App was built using React Native, JavaScript, Expo, GraphQL Apollo, Redux, React Navigation.<br/>
 Bonus features: dark mode support, fetch debounce, only loads 25 recipes first, can save favourite recipes.<br/>
+Images are left out of the app because they does not load outside of the UK, due to server security settings.
 Expo link: https://expo.io/@glodzl/react-native-tech-test
 
 # Recipe App
